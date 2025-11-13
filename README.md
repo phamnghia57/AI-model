@@ -1,2 +1,3 @@
 ﻿# AI-model
-dm thanh ngu
+dm thanh
+thằng Mạnh óc thí
