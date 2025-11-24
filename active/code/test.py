@@ -66,7 +66,7 @@ for doc_idx, sentences in enumerate(df['texts_sentences_tokenized']):
 
 df['Summary_LSA'] = summaries
 
-for i in range(100):
+for i in range(10):
     print("Original Document:\n", df['text'].iloc[i][:300], "...\n")
     print("Summary:\n", df['Summary_LSA'].iloc[i], "\n")
     print("="*80)
