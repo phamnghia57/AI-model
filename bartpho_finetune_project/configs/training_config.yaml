@@ -1,0 +1,11 @@
+model_name: "vinai/bartpho-word"
+max_input_length: 1024
+max_target_length: 256
+batch_size_per_device: 2
+gradient_accumulation_steps: 4
+num_train_epochs: 4
+learning_rate: 3e-5
+weight_decay: 0.01
+warmup_steps: 500
+generation_num_beams: 4
+save_total_limit: 3

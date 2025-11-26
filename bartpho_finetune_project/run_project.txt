@@ -1,0 +1,24 @@
+cấu trúc folder dự án
+bartpho_finetune_project/
+├─ data/
+│  └─ data.csv
+├─ scripts/
+│  ├─ prepare_data.py
+│  ├─ train.py
+│  ├─ evaluate_model.py
+│  └─ infer.py
+├─ configs/
+│  └─ training_config.yaml
+├─ outputs/
+│  └─ checkpoint-.../
+└─ requirements.txt
+
+# Open cmd -> cd '/thu muc project/'
+
+python -m venv bartpho_env
+bartpho_env\Scripts\activate
+pip install -r requirements.txt
+python scripts/prepapre_data.py
+python scripts/train.py vinai/bartpho-word data/processed outputs/bartpho-finetuned
+python scripts/evaluate_model.py // sua kich thuoc df_test trong file code de chay toan bo du lieu
+python scripts/infer.py outputs/bartpho-finetuned "TEXT"
