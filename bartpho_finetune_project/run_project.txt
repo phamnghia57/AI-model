@@ -1,4 +1,4 @@
-cấu trúc folder dự án
+cấu trúc folder dự án (khởi tạo ban đầu)
 bartpho_finetune_project/
 ├─ data/
 │  └─ data.csv
@@ -20,5 +20,6 @@ bartpho_env\Scripts\activate
 pip install -r requirements.txt
 python scripts/prepapre_data.py
 python scripts/train.py vinai/bartpho-word data/processed outputs/bartpho-finetuned
-python scripts/evaluate_model.py // sua kich thuoc df_test trong file code de chay toan bo du lieu
+python scripts/evaluate_model.py
 python scripts/infer.py outputs/bartpho-finetuned "TEXT"
+streamlit run app.py
