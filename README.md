@@ -35,7 +35,7 @@ AI-model/
     │   └── processed/
     │
     ├── outputs/
-    │   └── bartpho-fintuned/       # Mô hình fine-tuned (có đường dẫn tới drive)
+    │   └── bartpho-fintuned/       # Checkpoint model fine-tuned (có đường dẫn tới drive)
     │
     ├── scripts/
     │   ├── evaluate_model.py
@@ -46,6 +46,7 @@ AI-model/
     │
     ├── requirements.txt
     └── run_project.txt
+
 
 ## 2. Cách sử dụng mô hình BartPho
 
