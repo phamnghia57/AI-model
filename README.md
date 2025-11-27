@@ -24,7 +24,7 @@ AI-model/
 │
 └── bartpho_finetune_project/
     │
-    ├── bartpho_env/                # Môi trường ảo (có đường dẫn tới drive)
+    ├── bartpho_env/                # Môi trường ảo (đã cài trên máy)
     │
     ├── configs/
     │   └── training_config.yaml
@@ -35,7 +35,7 @@ AI-model/
     │   └── processed/
     │
     ├── outputs/
-    │   └── bartpho-fintuned/       # Checkpoint model fine-tuned (có đường dẫn tới drive)
+    │   └── bartpho-fintuned/       # Checkpoint model fine-tuned
     │
     ├── scripts/
     │   ├── evaluate_model.py
@@ -46,6 +46,7 @@ AI-model/
     │
     ├── requirements.txt
     └── run_project.txt
+
 
 
 ## 2. Cách sử dụng mô hình BartPho
@@ -70,3 +71,4 @@ Dự án sử dụng ba nhóm chỉ số chính:
 1. ROUGE-1, ROUGE-2, ROUGE-L: đo mức độ trùng khớp giữa tóm tắt dự đoán và tóm tắt chuẩn
 2. BERTScore-F1: đo mức độ tương đồng ngữ nghĩa trên không gian embedding
 3. Cosine Similarity (TF-IDF): đo sự gần gũi của phân phối từ
+
