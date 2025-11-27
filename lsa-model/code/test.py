@@ -5,9 +5,10 @@ from underthesea import word_tokenize, sent_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import TruncatedSVD
 from rouge import Rouge
+from bert_score import score
 from sklearn.metrics.pairwise import cosine_similarity
 
-df = pd.read_csv("D:\\Introduction to AI\\Project-AI\\bartpho_finetune_project\\data\\processed\\test.csv")
+df = pd.read_csv("D:\\Introduction to AI\\Project-AI\\lsa-model\\data\\processed\\test.csv")
 
 df['text'] = df['text'].str.lower()
 
@@ -71,13 +72,59 @@ for i in range(10):
     print("Summary:\n", df['Summary_LSA'].iloc[i], "\n")
     print("="*80)
 
-with open("D:\\Introduction to AI\\Project-AI\\active\\data\\test_data_summaries.txt", "w", encoding="utf-8") as f:
+with open("D:\\Introduction to AI\\Project-AI\\lsa-model\\data\\test_data_summaries.txt", "w", encoding="utf-8") as f:
     for i in range(min(1000, len(df))):
         f.write(f"Document {i+1}:\n")
         f.write("Original: " + df['text'].iloc[i] + "\n")
         f.write("Summary: " + df['Summary_LSA'].iloc[i] + "\n")
         f.write("="*80 + "\n")
 
+# Bert Score
+candidates = df['Summary_LSA'].tolist()
+references = df['summary'].tolist()
+
+batch_size = 8
+
+precision_list, recall_list, f1_list = [], [], []
+
+for i in range(0, len(candidates), batch_size):
+    cand_batch = candidates[i:i+batch_size]
+    ref_batch = references[i:i+batch_size]
+    
+    P, R, F1 = score(cand_batch, ref_batch, lang='en', rescale_with_baseline=True, model_type='bert-base-uncased')
+    
+    precision_list.extend(P.tolist())
+    recall_list.extend(R.tolist())
+    f1_list.extend(F1.tolist())
+
+df_bert = pd.DataFrame({
+    'precision': precision_list,
+    'recall': recall_list,
+    'f1': f1_list
+})
+
+mean_precision = df_bert['precision'].mean()
+mean_recall = df_bert['recall'].mean()
+mean_f1 = df_bert['f1'].mean()
+
+print("Avg Precision:", round(mean_precision, 3))
+print("Avg Recall:", round(mean_recall, 3))
+print("Avg F1:", round(mean_f1, 3))
+
+with open("D:\\Introduction to AI\\Project-AI\\lsa-model\\data\\test_berts_scores.txt", "w", encoding="utf-8") as f:
+    f.write("===== BERTS Scores (documents) =====\n")
+    f.write(df_bert.round(3).to_string())
+
+    f.write("\n\n===== Average Precision =====\n")
+    f.write(str(round(mean_precision, 3)))
+
+    f.write("\n\n===== Average Recall =====\n")
+    f.write(str(round(mean_recall, 3)))
+
+    f.write("\n\n===== Average F1 =====\n")
+    f.write(str(round(mean_f1, 3)))
+
+# Rouge Score
 rouge = Rouge()
 scores_list = []
 
@@ -88,7 +135,6 @@ for i in range(len(df)):
     scores_list.append(scores)
 
 df_rouge = pd.DataFrame(scores_list)
-print(df_rouge.head())
 
 rouge_1 = df_rouge['rouge-1'].apply(pd.Series)
 rouge_2 = df_rouge['rouge-2'].apply(pd.Series)
@@ -102,7 +148,7 @@ print("Average ROUGE-1:\n", avg_rouge_1)
 print("Average ROUGE-2:\n", avg_rouge_2)
 print("Average ROUGE-L:\n", avg_rouge_l)
 
-with open("D:\\Introduction to AI\\Project-AI\\active\\data\\test_rouge_scores.txt", "w", encoding="utf-8") as f:
+with open("D:\\Introduction to AI\\Project-AI\\lsa-model\\data\\test_rouge_scores.txt", "w", encoding="utf-8") as f:
     f.write("===== ROUGE Scores (documents) =====\n")
     f.write(df_rouge.map(
         lambda x: {k: round(v, 3) for k, v in x.items()}
@@ -117,6 +163,7 @@ with open("D:\\Introduction to AI\\Project-AI\\active\\data\\test_rouge_scores.t
     f.write("\n\n===== Average ROUGE-L =====\n")
     f.write(avg_rouge_l.round(3).to_string())
 
+# Sosin Similarity
 cosine_scores = []
 
 for i in range(len(df)):
@@ -126,11 +173,10 @@ for i in range(len(df)):
     cosine_scores.append(score)
 
 df['cosine_score'] = cosine_scores
-print(df['cosine_score'])
 
 print("Average Cosine similarity:", np.mean(cosine_scores))
 
-with open("D:\\Introduction to AI\\Project-AI\\active\\data\\test_cosine_scores.txt", "w", encoding="utf-8") as f:
+with open("D:\\Introduction to AI\\Project-AI\\lsa-model\\data\\test_cosine_scores.txt", "w", encoding="utf-8") as f:
     f.write("===== Cosine Similarity Scores (per document) =====\n\n")
     for i in range(len(df)):
         f.write(f"Document {i+1}:\n")
