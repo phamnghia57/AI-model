@@ -1,23 +1,71 @@
-# Vietnamese Text Summarization Project — BARTPho Fine-tuned
+# Summarize Paper – Hệ thống tóm tắt văn bản đa mô hình
 
-## Mô tả dự án
-Dự án này sử dụng mô hình **BARTPho** fine-tuned để thực hiện tóm tắt văn bản tiếng Việt.  
-Hệ thống được chia thành 4 module chính:
+Dự án Summarize Paper được xây dựng nhằm đánh giá và so sánh hiệu quả giữa nhiều phương pháp tóm tắt văn bản, bao gồm ba thuật toán truyền thống (TextRank, KL-Sum, LSA) và một mô hình học sâu (PhoBERT fine-tune). Hệ thống hỗ trợ toàn bộ quy trình từ tiền xử lý, sinh tóm tắt, đánh giá chất lượng đến xuất báo cáo kết quả.
 
-1. **Prepare_data**: Bước đầu tiền xử lý file data.csv
-2. **Training**: Huấn luyện mô hình BARTPho trên dữ liệu tóm tắt.
-3. **Inference**: Sinh tóm tắt cho văn bản mới.
-4. **Evaluate**: Đánh giá chất lượng mô hình với các metric tiêu chuẩn (ROUGE, BERTScore, Cosine similarity).
-5. **App**: Giao diện trực quan Streamlit để upload file hoặc nhập URL và nhận tóm tắt.
+## 1. Cấu trúc dự án
 
-## Cách sử dụng
+AI-model/
+│
+├── README.md
+│
+├── data/
+│   ├── raw/
+│   │   └── data.csv
+│   │
+│   └── processed/
+│       ├── train.csv
+│       ├── val.csv
+│       └── test.csv
+│
+├── algorithms/
+│   ├── textrank.ipynb
+│   ├── kl_sum.ipynb
+│   └── lsa.ipynb
+│
+└── bartpho_finetune_project/
+    │
+    ├── bartpho_env/                # Môi trường ảo (có đường dẫn tới drive)
+    │
+    ├── configs/
+    │   └── training_config.yaml
+    │
+    ├── data/
+    │   ├── data.csv
+    │   ├── evaluate/
+    │   └── processed/
+    │
+    ├── outputs/
+    │   └── bartpho-fintuned/       # Mô hình fine-tuned (có đường dẫn tới drive)
+    │
+    ├── scripts/
+    │   ├── evaluate_model.py
+    │   ├── infer.py
+    │   ├── prepare_data.py
+    │   ├── train.py
+    │   └── app.py
+    │
+    ├── requirements.txt
+    └── run_project.txt
 
-Open cmd -> cd '/thu muc project/'
-python -m venv bartpho_env
-bartpho_env\Scripts\activate
-pip install -r requirements.txt
-python scripts/prepapre_data.py
-python scripts/train.py vinai/bartpho-word data/processed outputs/bartpho-finetuned
-python scripts/evaluate_model.py
-python scripts/infer.py outputs/bartpho-finetuned "TEXT"
-streamlit run app.py
+## 2. Cách sử dụng mô hình BartPho
+
+### 2.1. Yêu cầu hệ thống
+1. Python >= 3.8
+2. CUDA (khuyến nghị)
+
+### 2.2. Cách chạy mô hình
+1. Open cmd -> cd '/thu muc project/'
+2. python -m venv bartpho_env
+3. bartpho_env\Scripts\activate
+4. pip install -r requirements.txt
+5. python scripts/prepapre_data.py
+6. python scripts/train.py vinai/bartpho-word data/processed outputs/bartpho-finetuned
+7. python scripts/evaluate_model.py
+8. python scripts/infer.py outputs/bartpho-finetuned "TEXT"
+9. streamlit run scripts/app.py
+
+## 3. Đánh giá mô hình
+Dự án sử dụng ba nhóm chỉ số chính:
+1. ROUGE-1, ROUGE-2, ROUGE-L: đo mức độ trùng khớp giữa tóm tắt dự đoán và tóm tắt chuẩn
+2. BERTScore-F1: đo mức độ tương đồng ngữ nghĩa trên không gian embedding
+3. Cosine Similarity (TF-IDF): đo sự gần gũi của phân phối từ
