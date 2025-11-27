@@ -3,51 +3,7 @@
 Dự án Summarize Paper được xây dựng nhằm đánh giá và so sánh hiệu quả giữa nhiều phương pháp tóm tắt văn bản, bao gồm ba thuật toán truyền thống (TextRank, KL-Sum, LSA) và một mô hình học sâu (PhoBERT fine-tune). Hệ thống hỗ trợ toàn bộ quy trình từ tiền xử lý, sinh tóm tắt, đánh giá chất lượng đến xuất báo cáo kết quả.
 
 ## 1. Cấu trúc dự án
-
-AI-model/
-│
-├── README.md
-│
-├── data/
-│   ├── raw/
-│   │   └── data.csv
-│   │
-│   └── processed/
-│       ├── train.csv
-│       ├── val.csv
-│       └── test.csv
-│
-├── algorithms/
-│   ├── textrank.ipynb
-│   ├── kl_sum.ipynb
-│   └── lsa.ipynb
-│
-└── bartpho_finetune_project/
-    │
-    ├── bartpho_env/                # Môi trường ảo (đã cài trên máy)
-    │
-    ├── configs/
-    │   └── training_config.yaml
-    │
-    ├── data/
-    │   ├── data.csv
-    │   ├── evaluate/
-    │   └── processed/
-    │
-    ├── outputs/
-    │   └── bartpho-fintuned/       # Checkpoint model fine-tuned
-    │
-    ├── scripts/
-    │   ├── evaluate_model.py
-    │   ├── infer.py
-    │   ├── prepare_data.py
-    │   ├── train.py
-    │   └── app.py
-    │
-    ├── requirements.txt
-    └── run_project.txt
-
-
+Tham khảo file /bartpho_finetune_project/run_project
 
 ## 2. Cách sử dụng mô hình BartPho
 

@@ -1,17 +1,48 @@
-cấu trúc folder dự án (khởi tạo ban đầu)
-bartpho_finetune_project/
-├─ data/
-│  └─ data.csv
-├─ scripts/
-│  ├─ prepare_data.py
-│  ├─ train.py
-│  ├─ evaluate_model.py
-│  └─ infer.py
-├─ configs/
-│  └─ training_config.yaml
-├─ outputs/
-│  └─ checkpoint-.../
-└─ requirements.txt
+cấu trúc folder dự án
+
+AI-model/
+│
+├── README.md
+│
+├── data/
+│   ├── raw/
+│   │   └── data.csv
+│   │
+│   └── processed/
+│       ├── train.csv
+│       ├── val.csv
+│       └── test.csv
+│
+├── algorithms/
+│   ├── textrank.ipynb
+│   ├── kl_sum.ipynb
+│   └── lsa.ipynb
+│
+└── bartpho_finetune_project/
+    │
+    ├── bartpho_env/                # Môi trường ảo (co duong dan toi drive)
+    │
+    ├── configs/
+    │   └── training_config.yaml
+    │
+    ├── data/
+    │   ├── data.csv
+    │   ├── evaluate/
+    │   └── processed/
+    │
+    ├── outputs/
+    │   └── bartpho-fintuned/       # Checkpoint model fine-tuned (co duong dan toi drive)
+    │
+    ├── scripts/
+    │   ├── evaluate_model.py
+    │   ├── infer.py
+    │   ├── prepare_data.py
+    │   ├── train.py
+    │   └── app.py
+    │
+    ├── requirements.txt
+    └── run_project.txt
+
 
 # Open cmd -> cd '/thu muc project/'
 
