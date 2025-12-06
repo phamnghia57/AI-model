@@ -125,35 +125,35 @@ def compute_metrics(eval_pred):
 # Cấu hình tham số training của HuggingFace Trainer
 training_args = Seq2SeqTrainingArguments(
     output_dir=output_dir,
-    eval_strategy="epoch",
-    per_device_train_batch_size=2,
-    per_device_eval_batch_size=2,
-    predict_with_generate=True,
-    do_train=True,
-    do_eval=True,
-    logging_strategy="steps",
-    logging_steps=200,
-    save_strategy="epoch",
-    save_total_limit=3,
-    num_train_epochs=4,
-    learning_rate=3e-5,
-    weight_decay=0.01,
-    warmup_steps=500,
-    fp16=True,
-    gradient_accumulation_steps=4,
-    generation_max_length=256,
-    generation_num_beams=4
+    eval_strategy="epoch", #mỗi khi kết thúc 1 epoch, mô hình sẽ tự động đánh giá trên tập valid 
+    per_device_train_batch_size=2, #batch_size khi train
+    per_device_eval_batch_size=2, #batch size khi val
+    predict_with_generate=True, #Khi evaluate, mô hình tự sinh ra văn bản
+    do_train=True, #cho phép huấn luyện
+    do_eval=True, #cho phép đánh giá mô hình trong lúc huấn luyện
+    logging_strategy="steps", #ghi log sau mỗi bước cố định
+    logging_steps=200, #cứ 200 bước train sẽ ghi log 1 lần
+    save_strategy="epoch", #mỗi epoch sẽ lưu checkpoint 1 lần
+    save_total_limit=3, #chỉ giữ lại tối đa 3 checkpoint gần nhất(tốt nhất)
+    num_train_epochs=4, #huấn luyện mô hình trong 4 epochs
+    learning_rate=3e-5, #tốc độ học
+    weight_decay=0.01, #hệ số regularization -> giảm overfitting
+    warmup_steps=500, #trong 500 bước đầu tiên, learning rate sẽ tăng dần từ 0 -> learning rate gốc
+    fp16=True, #công cụ hỗ trợ train nhanh và tiết kiệm dung lượng hơn
+    gradient_accumulation_steps=4, #giả lập batch size lớn hơn
+    generation_max_length=256, #chiều dài tối đa khi sinh văn bản tóm tắt
+    generation_num_beams=4 #Dùng Beam Search với 4 beam để tạo tóm tắt chất lượng hơn so với greedy search.
 )
 
 # Khởi tạo Trainer
 trainer = Seq2SeqTrainer(
     model=model,
     args=training_args,
-    train_dataset=train_block,
-    eval_dataset=val_block,
-    tokenizer=tokenizer,
-    data_collator=data_collator,
-    compute_metrics=compute_metrics
+    train_dataset=train_block, #dataset đã xử lý
+    eval_dataset=val_block, #dataset valid 
+    tokenizer=tokenizer, # khi train thì chuyển văn bản thành input_ids(ID), khi evaluate thì chuyển ID ngược lại thành câu chữ
+    data_collator=data_collator, #gom dữ liệu thành batch đúng kích thước batch size
+    compute_metrics=compute_metrics #hàm để tính các chỉ số sau khi tạo tóm tắt
 )
 
 trainer.train()
